@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>kwargs: Main Page</title>
+<title>kwargs: Python-style kwargs in C++</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,62 +61,343 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div id="doc-content">
 <div class="header">
   <div class="headertitle">
-<div class="title">Main Page </div>  </div>
+<div class="title">Python-style kwargs in C++ </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Python-style kwargs in C++</p>
-<div class="fragment"><div class="line"><span class="comment">// compile with g++ -std=c++11 -o kwargs kwargs.cpp</span></div>
+<div class="textblock"><p>When dealing with functions that have lots of optional parameters, or at least for which resonable defaults are readily available, it's often a bit of a frustration in C++. Generally defaults are specified during a function as in:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">double</span> BinarySearch(std::function&lt;<span class="keywordtype">double</span>(<span class="keywordtype">double</span>&gt; fn,</div>
+<div class="line">                    <span class="keywordtype">int</span> max_depth = 16, <span class="keywordtype">double</span> epsilon = 1e-9,</div>
+<div class="line">                    <span class="keywordtype">double</span> lower_bound = 0, <span class="keywordtype">double</span> upper_bound = 100);</div>
+</div><!-- fragment --><p>And then if we call <code>BinarySearch</code> with only one parameter then the call will use the default values for the rest. But what if I want to specify custom bound, but use the defaults for the other parameters? Admittedly, this is a contrived example since bounds are less likely to be optional then the others, and we could reorder them better going from most-likely-to-be-specified to least, but it's easy to see how something more flexible would be desirable.</p>
+<p>Consider then the following two code snippets. Which is more readable?</p>
+<p>First snippet: </p>
+<div class="fragment"><div class="line"><span class="keywordtype">double</span> solution = BinarySearch(fn, 0, 100);</div>
+</div><!-- fragment --><p>Second snippet: </p>
+<div class="fragment"><div class="line"><span class="keywordtype">double</span> solution = BinarySearch(fn, lower_bound = 0, upper_bound = 100);</div>
+</div><!-- fragment --><p>I really like the way that optional arguments work in python with <code>kwargs</code>. I'd love to have that same kind of functionality in C++. <code><a class="el" href="kwargs_8h.html" title="tooling for python-like kwargs in c++ ">kwargs.h</a></code> implements one mechanism of achieving this.</p>
+<h1>How does it work</h1>
+<p><code>kwargs</code> takes advantage of <a href="http://en.cppreference.com/w/cpp/language/parameter_pack" title="Wikipedia">variadic templates</a> in C++ to build up a single data structure which contains all of the optional parameters (I'll call this a "parameter pack"). Each optional parameter of type <code>T</code> is stored in a structure of type <code>Arg&lt;tag,T&gt;</code> where <code>tag</code> is a unique numeric identifier associated with a particular optional argument key.</p>
+<p>The parameter pack data structure derives from <code>Arg&lt;tag,T&gt;</code> for each <code>(tag,T)</code> pair that shows up in the list of optional arguments.</p>
+<p>Overloading of the equals (<code>=</code>) operator gives us an opportunity for building the <code>(tag,T)</code> pairs within the parameter list of the function call.</p>
+<h1>Examples</h1>
+<h2>Example 1</h2>
+<h3>Source</h3>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="kwargs_8h.html">kwargs.h</a>&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// these are tags which will uniquely identify the arguments in a parameter</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// pack</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">enum</span> Keys {</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;  c_tag,</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  d_tag</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;};</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// global symbols used as keys in list of kwargs</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<a class="code" href="structkw_1_1_key.html">kw::Key&lt;c_tag&gt;</a> c_key;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<a class="code" href="structkw_1_1_key.html">kw::Key&lt;d_tag&gt;</a> d_key;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// a function taking kwargs parameter pack</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Args&gt;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">void</span> foo(<span class="keywordtype">int</span> a, <span class="keywordtype">int</span> b, Args... kwargs) {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="comment">// first, we construct the parameter pack from the parameter pack</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  <a class="code" href="structkw_1_1_param_pack.html">kw::ParamPack</a>&lt;Args...&gt; params(kwargs...);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;foo:\n--------&quot;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\na: &quot;</span> &lt;&lt; a</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\nb: &quot;</span> &lt;&lt; b</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="comment">// We can attempt to retrieve a key while providing a default fallback value.</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="comment">// If c_key is in kwargs then this will return the value associated with</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="comment">// that key, and will have the correct type. Note that the type of the default</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="comment">// parameter in this case is const char*.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\nc: &quot;</span> &lt;&lt; <a class="code" href="namespacekw.html#a3d016ffdab3a83ecffecb5c406555f1b">kw::Get</a>(params,c_key,<span class="stringliteral">&quot;null&quot;</span>);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="comment">// We can also do stuff conditionally based on whether or not arg exists in</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="comment">// the param pack. We still need to provide a default value, since we need to</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="comment">// know the return type of the Get function when the key is not in kwargs.</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="comment">// In this case, the default value wont ever be used at runtime.</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keywordflow">if</span>( <a class="code" href="structkw_1_1_contains_tag.html">kw::ContainsTag&lt;c_tag,Args...&gt;::result</a> ) {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;\nd: &quot;</span> &lt;&lt; <a class="code" href="namespacekw.html#a3d016ffdab3a83ecffecb5c406555f1b">kw::Get</a>(params,d_key,0);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;\n\n&quot;</span>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">int</span> main( <span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv )</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  foo(1, 2);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  foo(1, 2, c_key=3);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  foo(1, 2, c_key=3, d_key=4);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  foo(1, 2, d_key=4);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
+<div class="ttc" id="namespacekw_html_a3d016ffdab3a83ecffecb5c406555f1b"><div class="ttname"><a href="namespacekw.html#a3d016ffdab3a83ecffecb5c406555f1b">kw::Get</a></div><div class="ttdeci">TypeOfTagDefault&lt; tag, Default, Args...&gt;::Result Get(ParamPack&lt; Args...&gt; &amp;pack, Default d)</div><div class="ttdoc">given a parameter pack, retrieves and return sthe parameter tagged with tag, or else returns a defaul...</div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00076">kwargs.h:76</a></div></div>
+<div class="ttc" id="structkw_1_1_key_html"><div class="ttname"><a href="structkw_1_1_key.html">kw::Key</a></div><div class="ttdoc">the type of a global symbol used as a key for key-values pairs in the kwargs parameter pack ...</div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00042">kwargs.h:42</a></div></div>
+<div class="ttc" id="structkw_1_1_contains_tag_html"><div class="ttname"><a href="structkw_1_1_contains_tag.html">kw::ContainsTag</a></div><div class="ttdoc">template meta-function contains a static boolean variable &#39;result&#39; which is true if tag is in the lis...</div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00060">kwargs.h:60</a></div></div>
+<div class="ttc" id="kwargs_8h_html"><div class="ttname"><a href="kwargs_8h.html">kwargs.h</a></div><div class="ttdoc">tooling for python-like kwargs in c++ </div></div>
+<div class="ttc" id="structkw_1_1_param_pack_html"><div class="ttname"><a href="structkw_1_1_param_pack.html">kw::ParamPack</a></div><div class="ttdoc">storage for kwargs parameter pack </div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00055">kwargs.h:55</a></div></div>
+</div><!-- fragment --><h3>Output</h3>
+<div class="fragment"><div class="line">foo:</div>
+<div class="line">--------</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">c: null</div>
 <div class="line"></div>
-<div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="kwargs_8h.html">kwargs.h</a>&quot;</span></div>
+<div class="line">foo:</div>
+<div class="line">--------</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">c: 3</div>
+<div class="line">d: 0</div>
 <div class="line"></div>
-<div class="line"><span class="comment">// these are tags which will uniquely identify the arguments in a parameter</span></div>
-<div class="line"><span class="comment">// pack</span></div>
-<div class="line"><span class="keyword">enum</span> Keys {</div>
-<div class="line">  c_tag,</div>
-<div class="line">  d_tag</div>
-<div class="line">};</div>
+<div class="line">foo:</div>
+<div class="line">--------</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">c: 3</div>
+<div class="line">d: 4</div>
 <div class="line"></div>
-<div class="line"><span class="comment">// global symbols used as keys in list of kwargs</span></div>
-<div class="line"><a class="code" href="structkw_1_1_key.html">kw::Key&lt;c_tag&gt;</a> c_key;</div>
-<div class="line"><a class="code" href="structkw_1_1_key.html">kw::Key&lt;d_tag&gt;</a> d_key;</div>
+<div class="line">foo:</div>
+<div class="line">--------</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">c: null</div>
 <div class="line"></div>
-<div class="line"><span class="comment">// a function taking kwargs parameter pack</span></div>
-<div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><span class="keywordtype">void</span> foo(<span class="keywordtype">int</span> a, <span class="keywordtype">int</span> b, Args... kwargs) {</div>
-<div class="line">  <span class="comment">// first, we construct the parameter pack from the parameter pack</span></div>
-<div class="line">  <a class="code" href="structkw_1_1_param_pack.html">kw::ParamPack</a>&lt;Args...&gt; params(kwargs...);</div>
+</div><!-- fragment --><h2>Example 2</h2>
+<h3>Source</h3>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="kwargs_8h.html">kwargs.h</a>&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// Tags are just numeric constants that allow us to gerate a unique type for</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// all of our keys. We can use enums, as in the previous example, or we can</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// can use straight up literals. Though the enums are a lot more readable.</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<a class="code" href="structkw_1_1_key.html">kw::Key&lt;1&gt;</a> c_key;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// We can utilize namespaces to keep our tag names from clobbering each other.</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>test {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">enum</span> Tags {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  c_tag,</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  d_tag</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;};</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<a class="code" href="structkw_1_1_key.html">kw::Key&lt;c_tag&gt;</a> c_key;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="structkw_1_1_key.html">kw::Key&lt;d_tag&gt;</a> d_key;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}  <span class="comment">// namespace test</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Args&gt;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> foo(<span class="keywordtype">int</span> a, <span class="keywordtype">int</span> b, Args... kwargs) {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <a class="code" href="structkw_1_1_param_pack.html">kw::ParamPack</a>&lt;Args...&gt; params(kwargs...);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;foo:\n-------&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\na: &quot;</span> &lt;&lt; a</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\nb: &quot;</span> &lt;&lt; b</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="comment">// If we want to retrieve a parameter by it&#39;s tag value, and not</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="comment">// it&#39;s key name, we can do that to, but this is pretty low-level.</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\nc: &quot;</span> &lt;&lt; kw::Get&lt;0&gt;(params,<span class="stringliteral">&quot;null&quot;</span>)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="comment">// Generally, using the key name is more readable.</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\nd: &quot;</span> &lt;&lt; <a class="code" href="namespacekw.html#a3d016ffdab3a83ecffecb5c406555f1b">kw::Get</a>(params,test::d_key,<span class="stringliteral">&quot;null&quot;</span>)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\n\n&quot;</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">/// usage of foo in various different ways</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment"></span><span class="keywordtype">int</span> main( <span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv )</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  foo(1, 2);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="comment">// foo() unpacks paremeter tagged with &quot;0&quot; so we can use any kw::Key&lt;0&gt; to</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="comment">// assign it.</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  foo(1, 2, <a class="code" href="structkw_1_1_key.html">kw::Key&lt;0&gt;</a>() = 3);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="comment">// Generally speaking, using a declared Key is more readable though, and</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="comment">// more in the spirit of python-like kwargs.</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  foo(1, 2, test::c_key = 3);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">// Unfortunately this opens up the avenue for abuse by using keys other than</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="comment">// the intended key. For instance we can use c_key from the root namespace,</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="comment">// which in fact packs the parameter with Key&lt;1&gt;, not Key&lt;0&gt; which is what</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="comment">// would be packed with test::c_key... So we need to be careful and use</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="comment">// the right keys.</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  foo(1, 2, c_key = 3);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="ttc" id="namespacekw_html_a3d016ffdab3a83ecffecb5c406555f1b"><div class="ttname"><a href="namespacekw.html#a3d016ffdab3a83ecffecb5c406555f1b">kw::Get</a></div><div class="ttdeci">TypeOfTagDefault&lt; tag, Default, Args...&gt;::Result Get(ParamPack&lt; Args...&gt; &amp;pack, Default d)</div><div class="ttdoc">given a parameter pack, retrieves and return sthe parameter tagged with tag, or else returns a defaul...</div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00076">kwargs.h:76</a></div></div>
+<div class="ttc" id="structkw_1_1_key_html"><div class="ttname"><a href="structkw_1_1_key.html">kw::Key</a></div><div class="ttdoc">the type of a global symbol used as a key for key-values pairs in the kwargs parameter pack ...</div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00042">kwargs.h:42</a></div></div>
+<div class="ttc" id="kwargs_8h_html"><div class="ttname"><a href="kwargs_8h.html">kwargs.h</a></div><div class="ttdoc">tooling for python-like kwargs in c++ </div></div>
+<div class="ttc" id="structkw_1_1_param_pack_html"><div class="ttname"><a href="structkw_1_1_param_pack.html">kw::ParamPack</a></div><div class="ttdoc">storage for kwargs parameter pack </div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00055">kwargs.h:55</a></div></div>
+</div><!-- fragment --><h3>Output</h3>
+<div class="fragment"><div class="line">foo:</div>
+<div class="line">-------</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">c: null</div>
+<div class="line">d: null</div>
 <div class="line"></div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;foo:\n--------&quot;</span></div>
-<div class="line">            &lt;&lt; <span class="stringliteral">&quot;\na: &quot;</span> &lt;&lt; a</div>
-<div class="line">            &lt;&lt; <span class="stringliteral">&quot;\nb: &quot;</span> &lt;&lt; b;</div>
-<div class="line">  <span class="comment">// We can do stuff conditionally based on whether or not the parameter pack</span></div>
-<div class="line">  <span class="comment">// contains the desired kwargs. We still need to provide a default value, but</span></div>
-<div class="line">  <span class="comment">// in this case it wont ever be used at runtime.</span></div>
-<div class="line">  <span class="keywordflow">if</span>( <a class="code" href="structkw_1_1_contains_tag.html">kw::ContainsTag&lt;c_tag,Args...&gt;::result</a> ) {</div>
-<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\nc: &quot;</span> &lt;&lt; kw::Get&lt;c_tag&gt;(params,0);</div>
-<div class="line">  }</div>
-<div class="line">  </div>
-<div class="line">  <span class="comment">// Alternatively, we can just use default values. If d_key is not among the</span></div>
-<div class="line">  <span class="comment">// kwargs, then Get() return &quot;null&quot; (a const char*).</span></div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;\nd: &quot;</span> &lt;&lt; kw::Get&lt;d_tag&gt;(params,<span class="stringliteral">&quot;null&quot;</span>);</div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;\n\n&quot;</span>;</div>
-<div class="line">}</div>
+<div class="line">foo:</div>
+<div class="line">-------</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">c: 3</div>
+<div class="line">d: null</div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">int</span> main( <span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv )</div>
-<div class="line">{</div>
-<div class="line">  foo(1, 2);</div>
-<div class="line">  foo(1, 2, c_key=3);</div>
-<div class="line">  foo(1, 2, c_key=3, d_key=4);</div>
-<div class="line">  foo(1, 2, d_key=4);</div>
-<div class="line">}</div>
+<div class="line">foo:</div>
+<div class="line">-------</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">c: 3</div>
+<div class="line">d: null</div>
 <div class="line"></div>
+<div class="line">foo:</div>
+<div class="line">-------</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">c: null</div>
+<div class="line">d: 3</div>
+<div class="line"></div>
+</div><!-- fragment --><h2>Example 3</h2>
+<h3>Source</h3>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="kwargs_8h.html">kwargs.h</a>&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">enum</span> Keys {</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;  c_tag,</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;  d_tag</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;};</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<a class="code" href="structkw_1_1_key.html">kw::Key&lt;c_tag&gt;</a> c_key;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<a class="code" href="structkw_1_1_key.html">kw::Key&lt;d_tag&gt;</a> d_key;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// This is a dummy class which just prints to cout whenever it is c&#39;tor-ed or</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// d&#39;tor-ed to demonstrate the amount of copying that may happen</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">class </span>Test {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  Test(<span class="keyword">const</span> Test&amp; other) { Construct(); }</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  Test() { Construct(); }</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  ~Test() {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;Destroyed object &quot;</span> &lt;&lt; obj_id_ &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  }</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <span class="keywordtype">int</span> GetId()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> obj_id_; }</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keywordtype">void</span> Construct() {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    obj_id_ = n_objs_++;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;Created object &quot;</span> &lt;&lt; obj_id_ &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  }</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keywordtype">int</span> obj_id_;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> n_objs_;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;};</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">int</span> Test::n_objs_ = 0;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// when we print a test object, print it&#39;s ID</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;std::ostream&amp; operator&lt;&lt;( std::ostream&amp; out, <span class="keyword">const</span> Test&amp; test ){</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  out &lt;&lt; test.GetId();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">return</span> out;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// when we print a test object pointer, print the object&#39;s id</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;std::ostream&amp; operator&lt;&lt;( std::ostream&amp; out, <span class="keyword">const</span> Test* test ){</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  out &lt;&lt; <span class="stringliteral">&quot;*&quot;</span> &lt;&lt; test-&gt;GetId();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">return</span> out;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Args&gt;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">void</span> foo(<span class="keywordtype">int</span> a, <span class="keywordtype">int</span> b, Args... kwargs) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="structkw_1_1_param_pack.html">kw::ParamPack</a>&lt;Args...&gt; params(kwargs...);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;foo:\n----&quot;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\na: &quot;</span> &lt;&lt; a</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\nb: &quot;</span> &lt;&lt; b</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\ne: &quot;</span> &lt;&lt; <a class="code" href="namespacekw.html#a3d016ffdab3a83ecffecb5c406555f1b">kw::Get</a>(params,c_key,<span class="stringliteral">&quot;null&quot;</span>)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\nf: &quot;</span> &lt;&lt; <a class="code" href="namespacekw.html#a3d016ffdab3a83ecffecb5c406555f1b">kw::Get</a>(params,d_key,<span class="stringliteral">&quot;null&quot;</span>)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;\n\n&quot;</span>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keywordtype">int</span> main( <span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv )</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="comment">// Note that 5 test objects are created. The object that shows up in foo()</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="comment">// is in fact the 4th copy of the original object!</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  foo(1, 2, c_key=Test());</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="comment">// We can avoid unnecessary copies by forcing the parameter to be passed</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="comment">// by const ref. In this case, only one Test object is actually made.</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  foo(1, 2, d_key=<a class="code" href="namespacekw.html#a4041582ef22fd5f60e9997edbdb6beb2">kw::ConstRef</a>(Test()));</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  Test test_obj;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="comment">// We can use ConstRef on non-temporaries too. No additional object&#39;s are</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="comment">// created, and foo() see&#39;s a reference to test_obj itself.</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  foo(1, 2, d_key=<a class="code" href="namespacekw.html#a4041582ef22fd5f60e9997edbdb6beb2">kw::ConstRef</a>(test_obj));</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">// For non-temporaries, we can use non-const ref as well. Again no additional</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">// object&#39;s are created, and foo() see&#39;s a reference to test_obj itself.</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  foo(1, 2, d_key=<a class="code" href="namespacekw.html#ad308b9a29d9810275e0a7872e36fe906">kw::Ref</a>(test_obj));</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">// Though, in general, if foo() needs to modify the object it may be better</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="comment">// to pass a pointer. In this case foo() get&#39;s a non-const pointer to</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">// test_obj.</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  foo(1, 2, d_key=&amp;test_obj);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}</div>
+<div class="ttc" id="namespacekw_html_a3d016ffdab3a83ecffecb5c406555f1b"><div class="ttname"><a href="namespacekw.html#a3d016ffdab3a83ecffecb5c406555f1b">kw::Get</a></div><div class="ttdeci">TypeOfTagDefault&lt; tag, Default, Args...&gt;::Result Get(ParamPack&lt; Args...&gt; &amp;pack, Default d)</div><div class="ttdoc">given a parameter pack, retrieves and return sthe parameter tagged with tag, or else returns a defaul...</div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00076">kwargs.h:76</a></div></div>
+<div class="ttc" id="namespacekw_html_ad308b9a29d9810275e0a7872e36fe906"><div class="ttname"><a href="namespacekw.html#ad308b9a29d9810275e0a7872e36fe906">kw::Ref</a></div><div class="ttdeci">RefWrap&lt; T &gt; Ref(T &amp;v)</div><div class="ttdoc">forces an argument to be passed by reference </div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00033">kwargs.h:33</a></div></div>
+<div class="ttc" id="structkw_1_1_key_html"><div class="ttname"><a href="structkw_1_1_key.html">kw::Key</a></div><div class="ttdoc">the type of a global symbol used as a key for key-values pairs in the kwargs parameter pack ...</div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00042">kwargs.h:42</a></div></div>
+<div class="ttc" id="namespacekw_html_a4041582ef22fd5f60e9997edbdb6beb2"><div class="ttname"><a href="namespacekw.html#a4041582ef22fd5f60e9997edbdb6beb2">kw::ConstRef</a></div><div class="ttdeci">const ConstRefWrap&lt; T &gt; ConstRef(const T &amp;v)</div><div class="ttdoc">forces an argument to be passed by const reference </div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00037">kwargs.h:37</a></div></div>
+<div class="ttc" id="kwargs_8h_html"><div class="ttname"><a href="kwargs_8h.html">kwargs.h</a></div><div class="ttdoc">tooling for python-like kwargs in c++ </div></div>
+<div class="ttc" id="structkw_1_1_param_pack_html"><div class="ttname"><a href="structkw_1_1_param_pack.html">kw::ParamPack</a></div><div class="ttdoc">storage for kwargs parameter pack </div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00055">kwargs.h:55</a></div></div>
+</div><!-- fragment --><h3>Output</h3>
+<div class="fragment"><div class="line">Created <span class="keywordtype">object</span> 0</div>
+<div class="line">Created <span class="keywordtype">object</span> 1</div>
+<div class="line">Created <span class="keywordtype">object</span> 2</div>
+<div class="line">Destroyed <span class="keywordtype">object</span> 1</div>
+<div class="line">Created <span class="keywordtype">object</span> 3</div>
+<div class="line">Created <span class="keywordtype">object</span> 4</div>
+<div class="line">Destroyed <span class="keywordtype">object</span> 3</div>
+<div class="line">Created <span class="keywordtype">object</span> 5</div>
+<div class="line">foo:</div>
+<div class="line">----</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">e: 5</div>
+<div class="line">f: null</div>
+<div class="line"></div>
+<div class="line">Destroyed <span class="keywordtype">object</span> 5</div>
+<div class="line">Destroyed <span class="keywordtype">object</span> 4</div>
+<div class="line">Destroyed <span class="keywordtype">object</span> 2</div>
+<div class="line">Destroyed <span class="keywordtype">object</span> 0</div>
+<div class="line">Created <span class="keywordtype">object</span> 6</div>
+<div class="line">foo:</div>
+<div class="line">----</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">e: null</div>
+<div class="line">f: 6</div>
+<div class="line"></div>
+<div class="line">Destroyed <span class="keywordtype">object</span> 6</div>
+<div class="line">Created <span class="keywordtype">object</span> 7</div>
+<div class="line">foo:</div>
+<div class="line">----</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">e: null</div>
+<div class="line">f: 7</div>
+<div class="line"></div>
+<div class="line">foo:</div>
+<div class="line">----</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">e: null</div>
+<div class="line">f: 7</div>
+<div class="line"></div>
+<div class="line">foo:</div>
+<div class="line">----</div>
+<div class="line">a: 1</div>
+<div class="line">b: 2</div>
+<div class="line">e: null</div>
+<div class="line">f: *7</div>
+<div class="line"></div>
+<div class="line">Destroyed <span class="keywordtype">object</span> 7</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 12 2014 23:45:39 for kwargs by
+    <li class="footer">Generated on Fri Jun 13 2014 23:27:50 for kwargs by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

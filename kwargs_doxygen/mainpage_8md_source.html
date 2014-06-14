@@ -69,19 +69,89 @@ $(document).ready(function(){initNavTree('mainpage_8md.html','');});
 <div class="title">mainpage.md</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="mainpage_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Main Page {#mainpage}</div>
+<a href="mainpage_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Python-style kwargs in C++ {#mainpage}</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;=========</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;Python-style kwargs in C++</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;@include example_1.cc</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;When dealing with functions that have lots of optional parameters, or at</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;least <span class="keywordflow">for</span> which resonable defaults are readily available, it<span class="stringliteral">&#39;s often a bit</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="stringliteral">of a frustration in C++. Generally defaults are specified during a function</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="stringliteral">as in:</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="stringliteral">@code{cc}</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="stringliteral">double BinarySearch(std::function&lt;double(double&gt; fn,</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="stringliteral">                    int max_depth = 16, double epsilon = 1e-9,</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="stringliteral">                    double lower_bound = 0, double upper_bound = 100);</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="stringliteral">@endcode</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="stringliteral">And then if we call `BinarySearch` with only one parameter then the call will</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="stringliteral">use the default values for the rest. But what if I want to specify custom</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="stringliteral">bound, but use the defaults for the other parameters? Admittedly, this is a</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="stringliteral">contrived example since bounds are less likely to be optional then the others,</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="stringliteral">and we could reorder them better going from most-likely-to-be-specified to</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="stringliteral">least, but it&#39;</span>s easy to see how something more flexible would be desirable.</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;Consider then the following two code snippets. Which is more readable?</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;First snippet:</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;@code{cc}</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">double</span> solution = BinarySearch(fn, 0, 100);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">@end</span>code</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;Second snippet:</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;@code{cc}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">double</span> solution = BinarySearch(fn, lower_bound = 0, upper_bound = 100);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">@end</span>code</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;I really like the way that optional arguments work in python with `kwargs`. I<span class="stringliteral">&#39;d</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="stringliteral">love to have that same kind of functionality in C++. `kwargs.h` implements</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="stringliteral">one mechanism of achieving this.</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="stringliteral"># How does it work</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="stringliteral">`kwargs` takes advantage of [variadic templates][href_wiki] in C++ to build</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="stringliteral">up a single data structure which contains all of the optional parameters</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="stringliteral">(I&#39;</span>ll call <span class="keyword">this</span> a <span class="stringliteral">&quot;parameter pack&quot;</span>). Each optional parameter of type `T` is</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;stored in a structure of type `Arg&lt;tag,T&gt;` where `tag` is a unique numeric</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;identifier associated with a particular optional argument key.</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;The parameter pack data structure derives from `Arg&lt;tag,T&gt;` <span class="keywordflow">for each</span> `(tag,T)`</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;pair that shows up in the list of optional arguments.</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;Overloading of the equals (`=`) operator gives us an opportunity for building</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;the `(tag,T)` pairs within the parameter list of the function call.</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;[href_wiki]: http:<span class="comment">//en.cppreference.com/w/cpp/language/parameter_pack (Wikipedia)</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor"># Examples</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">## Example 1</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span><span class="preprocessor">### Source</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor"></span>@includelineno example_1.cc</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">### Output</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor"></span>@include example_1.txt</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">## Example 2</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor"></span><span class="preprocessor">### Source</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor"></span>@includelineno example_2.cc</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">### Output</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor"></span>@include example_2.txt</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">## Example 3</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor"></span><span class="preprocessor">### Source</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span>@includelineno example_3.cc</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">### Output</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor"></span>@include example_3.txt</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="mainpage_8md.html">mainpage.md</a></li>
-    <li class="footer">Generated on Thu Jun 12 2014 23:45:39 for kwargs by
+    <li class="footer">Generated on Fri Jun 13 2014 23:27:50 for kwargs by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
