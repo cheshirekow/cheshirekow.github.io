@@ -39,6 +39,7 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -102,7 +103,7 @@ $(document).ready(function(){initNavTree('timeval_8h_source.html','');});
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classnix_1_1_timeval.html">   38</a></span>&#160;<span class="keyword">class </span><a class="code" href="classnix_1_1_timeval.html">Timeval</a> : <span class="keyword">public</span> timeval {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classnix_1_1_timeval.html#abfaa03537aaac744d4e1282664bfa640">   40</a></span>&#160;  <a class="code" href="classnix_1_1_timeval.html#abfaa03537aaac744d4e1282664bfa640">Timeval</a>(<span class="keyword">const</span> timeval&amp; other)</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classnix_1_1_timeval.html#abfaa03537aaac744d4e1282664bfa640">   40</a></span>&#160;  <a class="code" href="classnix_1_1_timeval.html#abfaa03537aaac744d4e1282664bfa640">Timeval</a>(<span class="keyword">const</span> timeval&amp; <a class="code" href="namespacempblocks_1_1kd2.html#adc33661588f9c3d96c6f8775e8247c59">other</a>)</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      : timeval(other) {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  }</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
@@ -110,12 +111,12 @@ $(document).ready(function(){initNavTree('timeval_8h_source.html','');});
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      : timeval { sec, usec } {</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  }</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classnix_1_1_timeval.html#abe3ad0d56df7423da662257321190244">   48</a></span>&#160;  <a class="code" href="classnix_1_1_timeval.html">Timeval</a>&amp; <a class="code" href="classnix_1_1_timeval.html#abe3ad0d56df7423da662257321190244">operator+=</a>(<span class="keyword">const</span> <a class="code" href="classnix_1_1_timeval.html">Timeval</a>&amp; other) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">return</span> (*<span class="keyword">this</span>) = (*this) + other;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classnix_1_1_timeval.html#abe3ad0d56df7423da662257321190244">   48</a></span>&#160;  <a class="code" href="classnix_1_1_timeval.html">Timeval</a>&amp; <a class="code" href="classnix_1_1_timeval.html#abe3ad0d56df7423da662257321190244">operator+=</a>(<span class="keyword">const</span> <a class="code" href="classnix_1_1_timeval.html">Timeval</a>&amp; <a class="code" href="namespacempblocks_1_1kd2.html#adc33661588f9c3d96c6f8775e8247c59">other</a>) {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">return</span> (*<span class="keyword">this</span>) = (*this) + <a class="code" href="namespacempblocks_1_1kd2.html#adc33661588f9c3d96c6f8775e8247c59">other</a>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classnix_1_1_timeval.html#a7ae617dabf2333f25b6bba132ba42bec">   52</a></span>&#160;  <a class="code" href="classnix_1_1_timeval.html">Timeval</a>&amp; <a class="code" href="classnix_1_1_timeval.html#a7ae617dabf2333f25b6bba132ba42bec">operator-=</a>(<span class="keyword">const</span> <a class="code" href="classnix_1_1_timeval.html">Timeval</a>&amp; other) {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">return</span> (*<span class="keyword">this</span>) = (*this) - other;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classnix_1_1_timeval.html#a7ae617dabf2333f25b6bba132ba42bec">   52</a></span>&#160;  <a class="code" href="classnix_1_1_timeval.html">Timeval</a>&amp; <a class="code" href="classnix_1_1_timeval.html#a7ae617dabf2333f25b6bba132ba42bec">operator-=</a>(<span class="keyword">const</span> <a class="code" href="classnix_1_1_timeval.html">Timeval</a>&amp; <a class="code" href="namespacempblocks_1_1kd2.html#adc33661588f9c3d96c6f8775e8247c59">other</a>) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">return</span> (*<span class="keyword">this</span>) = (*this) - <a class="code" href="namespacempblocks_1_1kd2.html#adc33661588f9c3d96c6f8775e8247c59">other</a>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  }</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;};</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
@@ -180,6 +181,7 @@ $(document).ready(function(){initNavTree('timeval_8h_source.html','');});
 <div class="ttc" id="classnix_1_1_timeval_html_a7ae617dabf2333f25b6bba132ba42bec"><div class="ttname"><a href="classnix_1_1_timeval.html#a7ae617dabf2333f25b6bba132ba42bec">nix::Timeval::operator-=</a></div><div class="ttdeci">Timeval &amp; operator-=(const Timeval &amp;other)</div><div class="ttdef"><b>Definition:</b> <a href="timeval_8h_source.html#l00052">timeval.h:52</a></div></div>
 <div class="ttc" id="timeval_8h_html_ad00e4d74312542f6cbe4ed309ca41fae"><div class="ttname"><a href="timeval_8h.html#ad00e4d74312542f6cbe4ed309ca41fae">operator&lt;=</a></div><div class="ttdeci">bool operator&lt;=(const timeval &amp;a, const timeval &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="timeval_8h_source.html#l00087">timeval.h:87</a></div></div>
 <div class="ttc" id="timeval_8h_html_ae15cf01c03e9393d94902f32ed4382a5"><div class="ttname"><a href="timeval_8h.html#ae15cf01c03e9393d94902f32ed4382a5">operator&gt;</a></div><div class="ttdeci">bool operator&gt;(const timeval &amp;a, const timeval &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="timeval_8h_source.html#l00077">timeval.h:77</a></div></div>
+<div class="ttc" id="namespacempblocks_1_1kd2_html_adc33661588f9c3d96c6f8775e8247c59"><div class="ttname"><a href="namespacempblocks_1_1kd2.html#adc33661588f9c3d96c6f8775e8247c59">mpblocks::kd2::other</a></div><div class="ttdeci">BinaryKey other(const BinaryKey &amp;key)</div><div class="ttdef"><b>Definition:</b> <a href="_binary_key_8h_source.html#l00044">BinaryKey.h:44</a></div></div>
 <div class="ttc" id="timeval_8h_html_a640c1c2b5b9d5617ce59c4d4649efcb1"><div class="ttname"><a href="timeval_8h.html#a640c1c2b5b9d5617ce59c4d4649efcb1">operator+</a></div><div class="ttdeci">timeval operator+(const timeval &amp;a, const timeval &amp;b)</div></div>
 <div class="ttc" id="classnix_1_1_timeval_html_a2a7934f3b5b5fd78a27b1eeb905e31b7"><div class="ttname"><a href="classnix_1_1_timeval.html#a2a7934f3b5b5fd78a27b1eeb905e31b7">nix::Timeval::Timeval</a></div><div class="ttdeci">Timeval(int sec=0, int usec=0)</div><div class="ttdef"><b>Definition:</b> <a href="timeval_8h_source.html#l00044">timeval.h:44</a></div></div>
 <div class="ttc" id="classnix_1_1_timeval_html"><div class="ttname"><a href="classnix_1_1_timeval.html">nix::Timeval</a></div><div class="ttdef"><b>Definition:</b> <a href="timeval_8h_source.html#l00038">timeval.h:38</a></div></div>
@@ -189,7 +191,7 @@ $(document).ready(function(){initNavTree('timeval_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_1d63f9e187347a062e6f47674a4f8f01.html">cpp_nix</a></li><li class="navelem"><a class="el" href="timeval_8h.html">timeval.h</a></li>
-    <li class="footer">Generated on Sun Feb 22 2015 10:01:32 for cheshirekow by
+    <li class="footer">Generated on Sun Mar 22 2015 22:47:43 for cheshirekow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

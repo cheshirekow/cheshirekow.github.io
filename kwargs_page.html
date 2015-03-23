@@ -39,6 +39,7 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -265,7 +266,7 @@ $(document).ready(function(){initNavTree('kwargs_page.html','');});
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// d&#39;tor-ed to demonstrate the amount of copying that may happen</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">class </span>Test {</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  Test(<span class="keyword">const</span> Test&amp; other) { Construct(); }</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  Test(<span class="keyword">const</span> Test&amp; <a class="code" href="namespacempblocks_1_1kd2.html#adc33661588f9c3d96c6f8775e8247c59">other</a>) { Construct(); }</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  Test() { Construct(); }</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  ~Test() {</div>
@@ -286,13 +287,13 @@ $(document).ready(function(){initNavTree('kwargs_page.html','');});
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">int</span> Test::n_objs_ = 0;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// when we print a test object, print it&#39;s ID</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;std::ostream&amp; operator&lt;&lt;( std::ostream&amp; out, <span class="keyword">const</span> Test&amp; test ){</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;std::ostream&amp; <a class="code" href="_untag_8h.html#aa658ba5ea40b123d0828b6314dc77a97">operator&lt;&lt;</a>( std::ostream&amp; out, <span class="keyword">const</span> Test&amp; test ){</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  out &lt;&lt; test.GetId();</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">return</span> out;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// when we print a test object pointer, print the object&#39;s id</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;std::ostream&amp; operator&lt;&lt;( std::ostream&amp; out, <span class="keyword">const</span> Test* test ){</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;std::ostream&amp; <a class="code" href="_untag_8h.html#aa658ba5ea40b123d0828b6314dc77a97">operator&lt;&lt;</a>( std::ostream&amp; out, <span class="keyword">const</span> Test* test ){</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  out &lt;&lt; <span class="stringliteral">&quot;*&quot;</span> &lt;&lt; test-&gt;GetId();</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">return</span> out;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
@@ -336,7 +337,9 @@ $(document).ready(function(){initNavTree('kwargs_page.html','');});
 <div class="ttc" id="namespacekw_html_ad308b9a29d9810275e0a7872e36fe906"><div class="ttname"><a href="namespacekw.html#ad308b9a29d9810275e0a7872e36fe906">kw::Ref</a></div><div class="ttdeci">RefWrap&lt; T &gt; Ref(T &amp;v)</div><div class="ttdoc">forces an argument to be passed by reference </div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00042">kwargs.h:42</a></div></div>
 <div class="ttc" id="structkw_1_1_key_html"><div class="ttname"><a href="structkw_1_1_key.html">kw::Key</a></div><div class="ttdoc">assignment operator sentinal used as a key for key-values pairs in the kwargs parameter pack ...</div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00051">kwargs.h:51</a></div></div>
 <div class="ttc" id="namespacekw_html_aceaa45d565447806aaeb33b792eb5593"><div class="ttname"><a href="namespacekw.html#aceaa45d565447806aaeb33b792eb5593">kw::Get</a></div><div class="ttdeci">TypeOfTagDefault&lt; Tag, Default, Args...&gt;::Result Get(ParamPack&lt; Args...&gt; &amp;pack, Default d)</div><div class="ttdoc">given a parameter pack, retrieves and return sthe parameter tagged with tag, or else returns a defaul...</div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00084">kwargs.h:84</a></div></div>
+<div class="ttc" id="_untag_8h_html_aa658ba5ea40b123d0828b6314dc77a97"><div class="ttname"><a href="_untag_8h.html#aa658ba5ea40b123d0828b6314dc77a97">operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;out, const freetype::Untag &amp;u)</div></div>
 <div class="ttc" id="namespacekw_html_a4041582ef22fd5f60e9997edbdb6beb2"><div class="ttname"><a href="namespacekw.html#a4041582ef22fd5f60e9997edbdb6beb2">kw::ConstRef</a></div><div class="ttdeci">const ConstRefWrap&lt; T &gt; ConstRef(const T &amp;v)</div><div class="ttdoc">forces an argument to be passed by const reference </div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00046">kwargs.h:46</a></div></div>
+<div class="ttc" id="namespacempblocks_1_1kd2_html_adc33661588f9c3d96c6f8775e8247c59"><div class="ttname"><a href="namespacempblocks_1_1kd2.html#adc33661588f9c3d96c6f8775e8247c59">mpblocks::kd2::other</a></div><div class="ttdeci">BinaryKey other(const BinaryKey &amp;key)</div><div class="ttdef"><b>Definition:</b> <a href="_binary_key_8h_source.html#l00044">BinaryKey.h:44</a></div></div>
 <div class="ttc" id="kwargs_8h_html"><div class="ttname"><a href="kwargs_8h.html">kwargs.h</a></div><div class="ttdoc">tooling for python-like kwargs in c++ </div></div>
 <div class="ttc" id="structkw_1_1_param_pack_html"><div class="ttname"><a href="structkw_1_1_param_pack.html">kw::ParamPack</a></div><div class="ttdoc">storage for kwargs parameter pack </div><div class="ttdef"><b>Definition:</b> <a href="kwargs_8h_source.html#l00073">kwargs.h:73</a></div></div>
 </div><!-- fragment --><h3>Output</h3>
@@ -396,7 +399,7 @@ $(document).ready(function(){initNavTree('kwargs_page.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 22 2015 10:01:32 for cheshirekow by
+    <li class="footer">Generated on Sun Mar 22 2015 22:47:45 for cheshirekow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -1,0 +1,27 @@
+var structedelsbrunner96_1_1_simplex_base =
+[
+    [ "MarkedVec", "structedelsbrunner96_1_1_simplex_base.html#af1cfc31dbd210c811339740968d4090e", null ],
+    [ "Point", "structedelsbrunner96_1_1_simplex_base.html#acd91d2343165e52dfb7c01c9bfeb6ca5", null ],
+    [ "PointRef", "structedelsbrunner96_1_1_simplex_base.html#a86aa8fb860969c5f30e6f0ca86855eed", null ],
+    [ "Scalar", "structedelsbrunner96_1_1_simplex_base.html#a657993fad914da345e4d791752617572", null ],
+    [ "Simplex", "structedelsbrunner96_1_1_simplex_base.html#a1905b7a2601e88994abe1b360a839ced", null ],
+    [ "SimplexRef", "structedelsbrunner96_1_1_simplex_base.html#a6332c58d2e445d46aba2ad33b45d70ab", null ],
+    [ "Storage", "structedelsbrunner96_1_1_simplex_base.html#ac5b5b68a6f14a27b95f9560f6537816a", null ],
+    [ "SimplexBase", "structedelsbrunner96_1_1_simplex_base.html#a8f005d00e7d364529173fe15513ba091", null ],
+    [ "BarycentricCoordinates", "structedelsbrunner96_1_1_simplex_base.html#a63fdd18466a3ed4494ef7c2d44578a97", null ],
+    [ "ComputeCenter", "structedelsbrunner96_1_1_simplex_base.html#a91e10ee10d25f9f555b51a3e2d15aff9", null ],
+    [ "Contains", "structedelsbrunner96_1_1_simplex_base.html#ae9f3526fc9a37ed2c6e03aadf5b26f32", null ],
+    [ "CoordinatesOf", "structedelsbrunner96_1_1_simplex_base.html#a388da96b9c3502d3b8e4a6c8b989426a", null ],
+    [ "IndexOf", "structedelsbrunner96_1_1_simplex_base.html#a1c0c901bce1cda843c4f3d20fd9acd84", null ],
+    [ "NeighborAcross", "structedelsbrunner96_1_1_simplex_base.html#ada6e7c45f4fb504f6158b6ff18497f8d", null ],
+    [ "SetNeighborAcross", "structedelsbrunner96_1_1_simplex_base.html#a73e2b4549e363a65ff37b8ec28d2da4f", null ],
+    [ "SetVertices", "structedelsbrunner96_1_1_simplex_base.html#a92642e5552c9dec83e90cd15180d3478", null ],
+    [ "SetVertices", "structedelsbrunner96_1_1_simplex_base.html#a0413497f86e005db2de1643eebadc6a9", null ],
+    [ "SetVertices", "structedelsbrunner96_1_1_simplex_base.html#a12e1164d182d56cb8f6ffeec98b1faeb", null ],
+    [ "c", "structedelsbrunner96_1_1_simplex_base.html#a692385f13cd20dd6a2317100c78c03b9", null ],
+    [ "marked", "structedelsbrunner96_1_1_simplex_base.html#ab2bb2d81cf552ff25094835a043f68eb", null ],
+    [ "N", "structedelsbrunner96_1_1_simplex_base.html#aa3ba13c44f8f9c91578d62250c2a5d16", null ],
+    [ "r2", "structedelsbrunner96_1_1_simplex_base.html#a342fd15d4c0bd1953bbdbf1973027c52", null ],
+    [ "V", "structedelsbrunner96_1_1_simplex_base.html#a9f6b5d268ca7da5ba68f660826d27207", null ],
+    [ "version", "structedelsbrunner96_1_1_simplex_base.html#aa57206bae46fcb20f1ab42699c1c7b81", null ]
+];

@@ -16,6 +16,6 @@ var dir_1d63f9e187347a062e6f47674a4f8f01 =
       [ "NotifyPipe", "classnix_1_1_notify_pipe.html", "classnix_1_1_notify_pipe" ]
     ] ],
     [ "select_set.h", "select__set_8h.html", "select__set_8h" ],
-    [ "timespec.h", "timespec_8h.html", "timespec_8h" ],
+    [ "timespec.h", "cpp__nix_2timespec_8h.html", "cpp__nix_2timespec_8h" ],
     [ "timeval.h", "timeval_8h.html", "timeval_8h" ]
 ];

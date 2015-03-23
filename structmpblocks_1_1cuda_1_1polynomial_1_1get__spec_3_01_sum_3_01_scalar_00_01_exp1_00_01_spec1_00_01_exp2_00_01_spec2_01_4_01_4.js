@@ -1,0 +1,4 @@
+var structmpblocks_1_1cuda_1_1polynomial_1_1get__spec_3_01_sum_3_01_scalar_00_01_exp1_00_01_spec1_00_01_exp2_00_01_spec2_01_4_01_4 =
+[
+    [ "result", "structmpblocks_1_1cuda_1_1polynomial_1_1get__spec_3_01_sum_3_01_scalar_00_01_exp1_00_01_spec1_00_01_exp2_00_01_spec2_01_4_01_4.html#a9428df1769b5c6ac21de2c90185b1488", null ]
+];

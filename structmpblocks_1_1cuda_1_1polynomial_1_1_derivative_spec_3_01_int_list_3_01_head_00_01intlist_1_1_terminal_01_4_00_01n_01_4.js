@@ -1,0 +1,4 @@
+var structmpblocks_1_1cuda_1_1polynomial_1_1_derivative_spec_3_01_int_list_3_01_head_00_01intlist_1_1_terminal_01_4_00_01n_01_4 =
+[
+    [ "result", "structmpblocks_1_1cuda_1_1polynomial_1_1_derivative_spec_3_01_int_list_3_01_head_00_01intlist_1_1_terminal_01_4_00_01n_01_4.html#aa2dee55e43e021ab3e3f00c41f7a6653", null ]
+];

@@ -1,0 +1,4 @@
+var structfiber_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__3_00_01__2_00_01__1_01_4 =
+[
+    [ "HAS_SPECIALIZATION", "structfiber_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__3_00_01__2_00_01__1_01_4.html#ad124fd3f1d4b48f6c05bf2905ffb2919ae37234623cffe9b1fbf95e97ba365dc4", null ]
+];

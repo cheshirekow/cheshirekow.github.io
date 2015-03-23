@@ -1,0 +1,5 @@
+var structmpblocks_1_1cuda_1_1polynomial_1_1product__detail_1_1inner__loop_3_01_coeff1_00_01_int_lisc4b699f0d6280ddff6cc093c445d7e1f =
+[
+    [ "NewNode", "structmpblocks_1_1cuda_1_1polynomial_1_1product__detail_1_1inner__loop_3_01_coeff1_00_01_int_lisc4b699f0d6280ddff6cc093c445d7e1f.html#a8cab8fb2689e72ee94cb0ba7fde3384e", null ],
+    [ "result", "structmpblocks_1_1cuda_1_1polynomial_1_1product__detail_1_1inner__loop_3_01_coeff1_00_01_int_lisc4b699f0d6280ddff6cc093c445d7e1f.html#ac0e7b835421502b70eece8a18238dafc", null ]
+];

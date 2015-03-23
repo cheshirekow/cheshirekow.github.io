@@ -1,0 +1,4 @@
+var structmpblocks_1_1cuda_1_1polynomial_1_1intlist_1_1merge__sort__detail_1_1divide__and__conquer_3bacac05dd5ba25df36bca360031ee2ce =
+[
+    [ "result", "structmpblocks_1_1cuda_1_1polynomial_1_1intlist_1_1merge__sort__detail_1_1divide__and__conquer_3bacac05dd5ba25df36bca360031ee2ce.html#affab4b3597227759d0803471a06bee20", null ]
+];

@@ -1,0 +1,4 @@
+var structmpblocks_1_1cuda_1_1polynomial_1_1intlist_1_1size_3_01_int_list_3_01_head_00_01_tail_01_4_01_4 =
+[
+    [ "value", "structmpblocks_1_1cuda_1_1polynomial_1_1intlist_1_1size_3_01_int_list_3_01_head_00_01_tail_01_4_01_4.html#a92b3b961dee4ca5d2454a5d12f8b43aca79a11e52f5737306da8ef81c4de9be1c", null ]
+];

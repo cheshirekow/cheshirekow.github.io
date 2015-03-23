@@ -1,0 +1,4 @@
+var structmpblocks_1_1polynomial_1_1_max_select_3_01_val1_00_01_val2_00_01false_01_4 =
+[
+    [ "VALUE", "structmpblocks_1_1polynomial_1_1_max_select_3_01_val1_00_01_val2_00_01false_01_4.html#a3b92abe4dfef57a69956d302694c5544aa5d93fa35cab23224fb8c3449b16c6a2", null ]
+];

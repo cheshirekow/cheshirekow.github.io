@@ -1,0 +1,27 @@
+var rotation__conversions_8h =
+[
+    [ "AxisAngle", "classfiber_1_1_axis_angle.html", "classfiber_1_1_axis_angle" ],
+    [ "CoordinateAxisAngle", "classfiber_1_1_coordinate_axis_angle.html", "classfiber_1_1_coordinate_axis_angle" ],
+    [ "_AnglesFromQuaternion", "structfiber_1_1euler_1_1___angles_from_quaternion.html", "structfiber_1_1euler_1_1___angles_from_quaternion" ],
+    [ "_AnglesFromQuaternion< Scalar, _1, _2, _1 >", "structfiber_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__1_00_01__2_00_01__1_01_4.html", "structfiber_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__1_00_01__2_00_01__1_01_4" ],
+    [ "_AnglesFromQuaternion< Scalar, _1, _2, _3 >", "structfiber_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__1_00_01__2_00_01__3_01_4.html", "structfiber_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__1_00_01__2_00_01__3_01_4" ],
+    [ "_AnglesFromQuaternion< Scalar, _3, _1, _3 >", "structfiber_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__3_00_01__1_00_01__3_01_4.html", "structfiber_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__3_00_01__1_00_01__3_01_4" ],
+    [ "_AnglesFromQuaternion< Scalar, _3, _2, _1 >", "structfiber_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__3_00_01__2_00_01__1_01_4.html", "structfiber_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__3_00_01__2_00_01__1_01_4" ],
+    [ "Angles", "classfiber_1_1euler_1_1_angles.html", "classfiber_1_1euler_1_1_angles" ],
+    [ "Quaternion", "classfiber_1_1_quaternion.html", "classfiber_1_1_quaternion" ],
+    [ "X", "rotation__conversions_8h.html#ab410eb2d82348b327e2d5535602fe760ab158e53e2e0bb6d657cdf9c01376214b", null ],
+    [ "Y", "rotation__conversions_8h.html#ab410eb2d82348b327e2d5535602fe760ab2cef269654cf91773a7773d1a2ef324", null ],
+    [ "Z", "rotation__conversions_8h.html#ab410eb2d82348b327e2d5535602fe760a30ae0f8ba5fb8227dcad935c5e8a1657", null ],
+    [ "_1", "rotation__conversions_8h.html#af85f42aaedfee8fc73808fcdd6dfa50ea80d7ea61a8c9f52ff9f9668b5cf9983b", null ],
+    [ "_2", "rotation__conversions_8h.html#af85f42aaedfee8fc73808fcdd6dfa50ea49f9782019cbc4d5a9664686ba9c11e3", null ],
+    [ "_3", "rotation__conversions_8h.html#af85f42aaedfee8fc73808fcdd6dfa50ea76d1741c9bfa2721ff3cb1b031f02424", null ],
+    [ "AxisAngleToQuaternion", "rotation__conversions_8h.html#af4fc8b07183835d81e2006493b99572a", null ],
+    [ "AxisAngleToQuaternion", "rotation__conversions_8h.html#aaf000f915af38b94b8a7f0efe8dbfa77", null ],
+    [ "AxisAngleToRotationMatrix", "rotation__conversions_8h.html#ac54f0aaf93feca394d281dec08d32068", null ],
+    [ "CoordinateAxisAngleToQuaternion", "rotation__conversions_8h.html#a5ee24cf1411820641ab7f2e7d282b500", null ],
+    [ "CoordinateAxisAngleToRotationMatrix", "rotation__conversions_8h.html#abda792ad5f59cde646bd33e9d152fb77", null ],
+    [ "EulerAnglesToQuaternion", "rotation__conversions_8h.html#af669d9085cd3b02e9eea954bbeb1c8b7", null ],
+    [ "QuaternionToAxisAngle", "rotation__conversions_8h.html#aee33d28af23b43a5a1d39b4363747265", null ],
+    [ "QuaternionToRotationMatrix", "rotation__conversions_8h.html#a0d7d427c792cde4463b9e86b2f665d3d", null ],
+    [ "RotationMatrixToQuaternion", "rotation__conversions_8h.html#a447f60153bd388037e41e1028d89054d", null ]
+];

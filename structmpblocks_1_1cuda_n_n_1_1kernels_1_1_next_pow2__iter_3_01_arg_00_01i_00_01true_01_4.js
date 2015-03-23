@@ -1,0 +1,4 @@
+var structmpblocks_1_1cuda_n_n_1_1kernels_1_1_next_pow2__iter_3_01_arg_00_01i_00_01true_01_4 =
+[
+    [ "value", "structmpblocks_1_1cuda_n_n_1_1kernels_1_1_next_pow2__iter_3_01_arg_00_01i_00_01true_01_4.html#afd1fd2fa482322eff8a99ae5f1b35c3daa005b2d65a48473aa9c9f2b9f1b93522", null ]
+];

@@ -39,6 +39,7 @@
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -136,7 +137,7 @@ $(document).ready(function(){initNavTree('thread_8h_source.html','');});
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classpthreads_1_1_thread.html#ab82ce340ea0ea842139ad71f31b8cf80">kill</a>(<span class="keywordtype">int</span> sig);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classpthreads_1_1_thread.html#a0ded235eb51bb6f4d667b9f7ac3a3b1f">operator==</a>(<span class="keyword">const</span> <a class="code" href="classpthreads_1_1_thread.html">Thread</a>&amp; other);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classpthreads_1_1_thread.html#a0ded235eb51bb6f4d667b9f7ac3a3b1f">operator==</a>(<span class="keyword">const</span> <a class="code" href="classpthreads_1_1_thread.html">Thread</a>&amp; <a class="code" href="namespacempblocks_1_1kd2.html#adc33661588f9c3d96c6f8775e8247c59">other</a>);</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classpthreads_1_1_thread.html#a0e5791e40492faaae6ef384e57828060">exit</a>(<span class="keywordtype">void</span>* value_ptr);</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
@@ -156,6 +157,7 @@ $(document).ready(function(){initNavTree('thread_8h_source.html','');});
 <div class="ttc" id="attr_8h_html"><div class="ttname"><a href="attr_8h.html">attr.h</a></div></div>
 <div class="ttc" id="classpthreads_1_1_thread_html_aaf7bcdc15ea85becba238232617701e7"><div class="ttname"><a href="classpthreads_1_1_thread.html#aaf7bcdc15ea85becba238232617701e7">pthreads::Thread::join</a></div><div class="ttdeci">int join(void **value_ptr=0)</div><div class="ttdoc">join a thread, calling thread blocks until this thread has exited </div></div>
 <div class="ttc" id="classpthreads_1_1_thread_html_a32f44699ac31f0b291be7a0f520d5798"><div class="ttname"><a href="classpthreads_1_1_thread.html#a32f44699ac31f0b291be7a0f520d5798">pthreads::Thread::routine_t</a></div><div class="ttdeci">void *(* routine_t)(void *)</div><div class="ttdoc">type of a function which the thread will invoke </div><div class="ttdef"><b>Definition:</b> <a href="thread_8h_source.html#l00047">thread.h:47</a></div></div>
+<div class="ttc" id="namespacempblocks_1_1kd2_html_adc33661588f9c3d96c6f8775e8247c59"><div class="ttname"><a href="namespacempblocks_1_1kd2.html#adc33661588f9c3d96c6f8775e8247c59">mpblocks::kd2::other</a></div><div class="ttdeci">BinaryKey other(const BinaryKey &amp;key)</div><div class="ttdef"><b>Definition:</b> <a href="_binary_key_8h_source.html#l00044">BinaryKey.h:44</a></div></div>
 <div class="ttc" id="namespacepthreads_html_a8213426792dd3c9018fbb7ead2b7b634"><div class="ttname"><a href="namespacepthreads.html#a8213426792dd3c9018fbb7ead2b7b634">pthreads::callCallable</a></div><div class="ttdeci">void * callCallable(void *obj)</div><div class="ttdoc">function which invokes a callable object when that object is passed to launch a thread ...</div><div class="ttdef"><b>Definition:</b> <a href="thread_8h_source.html#l00038">thread.h:38</a></div></div>
 <div class="ttc" id="classpthreads_1_1_attr_html"><div class="ttname"><a href="classpthreads_1_1_attr.html">pthreads::Attr</a></div><div class="ttdoc">Attributes object for type Base. </div><div class="ttdef"><b>Definition:</b> <a href="attr_8h_source.html#l00035">attr.h:35</a></div></div>
 <div class="ttc" id="classpthreads_1_1_thread_html_ab82ce340ea0ea842139ad71f31b8cf80"><div class="ttname"><a href="classpthreads_1_1_thread.html#ab82ce340ea0ea842139ad71f31b8cf80">pthreads::Thread::kill</a></div><div class="ttdeci">int kill(int sig)</div><div class="ttdoc">send a signal to the thread </div></div>
@@ -168,7 +170,7 @@ $(document).ready(function(){initNavTree('thread_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_1f7d31f07a5c54c086ce26e9e45d013f.html">cpp_pthreads</a></li><li class="navelem"><a class="el" href="thread_8h.html">thread.h</a></li>
-    <li class="footer">Generated on Sun Feb 22 2015 10:01:32 for cheshirekow by
+    <li class="footer">Generated on Sun Mar 22 2015 22:47:43 for cheshirekow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

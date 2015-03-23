@@ -1,0 +1,4 @@
+var structmpblocks_1_1cuda_1_1polynomial_1_1get__spec_3_01_polynomial_3_01_scalar_00_01_spec_01_4_01_4 =
+[
+    [ "result", "structmpblocks_1_1cuda_1_1polynomial_1_1get__spec_3_01_polynomial_3_01_scalar_00_01_spec_01_4_01_4.html#a20e37697cee9c1595697b0bfe49a5074", null ]
+];

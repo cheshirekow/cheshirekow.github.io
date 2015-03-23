@@ -1,0 +1,4 @@
+var structmpblocks_1_1linalg_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__3_00_01__2_00_01__1_01_4 =
+[
+    [ "HAS_SPECIALIZATION", "structmpblocks_1_1linalg_1_1euler_1_1___angles_from_quaternion_3_01_scalar_00_01__3_00_01__2_00_01__1_01_4.html#aba9039f56a51f1dc6eb1cc29a24dd19ca2fdeedea407ea985b5eb05eb073a78f2", null ]
+];

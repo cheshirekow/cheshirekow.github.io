@@ -1,0 +1,4 @@
+var structmpblocks_1_1cuda_1_1polynomial_1_1sturm__detail_1_1_sign_change_helper_3_01_scalar_00_01size_00_01size_01_4 =
+[
+    [ "max", "structmpblocks_1_1cuda_1_1polynomial_1_1sturm__detail_1_1_sign_change_helper_3_01_scalar_00_01size_00_01size_01_4.html#a3d6c825133f2b467afaf3c831615d5b9ab052fcc7278d4998acf50f01a08189e9", null ]
+];

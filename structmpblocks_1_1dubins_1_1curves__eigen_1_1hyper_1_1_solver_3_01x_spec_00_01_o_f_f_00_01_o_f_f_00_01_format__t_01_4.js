@@ -1,0 +1,7 @@
+var structmpblocks_1_1dubins_1_1curves__eigen_1_1hyper_1_1_solver_3_01x_spec_00_01_o_f_f_00_01_o_f_f_00_01_format__t_01_4 =
+[
+    [ "Hyper_t", "structmpblocks_1_1dubins_1_1curves__eigen_1_1hyper_1_1_solver_3_01x_spec_00_01_o_f_f_00_01_o_f_f_00_01_format__t_01_4.html#a008035edfff87bd97a623cb57cd12516", null ],
+    [ "Result_t", "structmpblocks_1_1dubins_1_1curves__eigen_1_1hyper_1_1_solver_3_01x_spec_00_01_o_f_f_00_01_o_f_f_00_01_format__t_01_4.html#a1a027437e76b9db205613dd738759132", null ],
+    [ "Vector2d_t", "structmpblocks_1_1dubins_1_1curves__eigen_1_1hyper_1_1_solver_3_01x_spec_00_01_o_f_f_00_01_o_f_f_00_01_format__t_01_4.html#a3087b241d1b0bc36328476847d2c5616", null ],
+    [ "Vector3d_t", "structmpblocks_1_1dubins_1_1curves__eigen_1_1hyper_1_1_solver_3_01x_spec_00_01_o_f_f_00_01_o_f_f_00_01_format__t_01_4.html#a3f880824dbccd74010ba94807fe867d4", null ]
+];

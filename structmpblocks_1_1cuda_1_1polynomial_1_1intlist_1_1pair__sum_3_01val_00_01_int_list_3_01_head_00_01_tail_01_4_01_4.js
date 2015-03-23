@@ -1,0 +1,4 @@
+var structmpblocks_1_1cuda_1_1polynomial_1_1intlist_1_1pair__sum_3_01val_00_01_int_list_3_01_head_00_01_tail_01_4_01_4 =
+[
+    [ "result", "structmpblocks_1_1cuda_1_1polynomial_1_1intlist_1_1pair__sum_3_01val_00_01_int_list_3_01_head_00_01_tail_01_4_01_4.html#ac0d5267c60ca1ec3e4c82456d367e55c", null ]
+];
